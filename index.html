@@ -88,7 +88,7 @@
       transform: translateX(-50%);
       display: flex;
       justify-content: center;
-      flex-wrap: wrap;
+      flex-wrap: nowrap;
       gap: 1rem;
       padding: 1rem 2.5rem;
       background: rgba(250, 250, 255, 0.12);
@@ -100,6 +100,10 @@
       color: #f9e9b8;
       z-index: 20;
       user-select: none;
+      min-width: 280px;  /* keeps oval shape on mobile */
+      max-width: 95vw;   /* prevents overflow on very small screens */
+      overflow-x: auto;  /* allows scrolling on narrow viewports */
+      white-space: nowrap; /* prevents nav links from wrapping */
     }
     nav a {
       color: #f9e9b8;
@@ -154,6 +158,9 @@
       50% { transform: translateY(0); }
       75% { transform: translateY(10px); }
       100% { transform: translateY(0); }
+    }
+    @media (max-width: 400px) {
+      nav a { font-size: 0.8rem; }
     }
   </style>
 </head>
