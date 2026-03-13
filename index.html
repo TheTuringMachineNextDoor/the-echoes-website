@@ -1,252 +1,741 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <title>The Echoes</title>
-  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif&family=Playfair+Display:wght@700&display=swap" rel="stylesheet" />
-  <script src="https://cdn.jsdelivr.net/particles.js/2.0.0/particles.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Anton&family=DM+Serif+Display:ital@0;1&family=Space+Grotesk:wght@300;400;500&display=swap" rel="stylesheet"/>
   <style>
-    html { scroll-behavior: smooth; font-size: 16px; }
+    :root {
+      --black: #0a0a0a;
+      --white: #f7f4ef;
+      --red: #d4321c;
+      --gold: #c8a84b;
+      --mid: #2e2b26;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
     body {
-      font-size: clamp(0.9rem, 1.2vw + 0.5rem, 1.5rem);
-      margin: 0;
-      font-family: 'Instrument Serif', serif;
-      background: linear-gradient(135deg, #050011, #000016, #050011);
-      color: #f9e9b8;
-      -webkit-font-smoothing: antialiased;
-      -moz-osx-font-smoothing: grayscale;
+      font-family: 'Space Grotesk', sans-serif;
+      background: var(--white);
+      color: var(--black);
+      overflow-x: hidden;
     }
-    #particles-js {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      z-index: -1;
-    }
-    section {
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      padding: 4rem 2rem;
-      text-align: center;
-      border-bottom: 1px solid rgba(249, 233, 184, 0.1);
-      overflow: hidden;
-      opacity: 0;
-      transform: scale(0.95);
-      transition: opacity 1s ease, transform 1s cubic-bezier(0.68, -0.55, 0.27, 1.55);
-    }
-    section.visible {
-      opacity: 1;
-      transform: scale(1);
-    }
-    section:nth-child(even) { background: rgba(10, 0, 26, 0.4); }
-    h1, h2 {
-      font-family: 'Playfair Display', serif;
-      font-weight: 700;
-      margin: 0 0 1rem 0;
-      line-height: 1.05;
-      user-select: none;
-      max-width: 95vw;
-      word-break: break-word;
-      color: #f9e9b8;
-    }
-    h1.italic-typewriter {
-      font-style: italic;
-      font-size: clamp(3rem, 12vw, 12rem);
-      white-space: nowrap;
-      border-right: 0.15em solid #f9e9b8;
-      overflow: hidden;
-      width: 0;
-      animation: typing 3s steps(11, end) forwards, blink-caret 0.75s step-end infinite;
-    }
-    h1.italic-typewriter.done {
-      width: 11ch;
-      animation: echoPulse 2s infinite;
-      border-right: none;
-    }
-    h2 {
-      font-size: clamp(2rem, 8vw, 12rem);
-      animation: fadeInOut 4s ease-in-out infinite;
-    }
-    @keyframes typing { from { width: 0; } to { width: 11ch; } }
-    @keyframes blink-caret { 50% { border-color: transparent; } 100% { border-color: #f9e9b8; } }
-    @keyframes echoPulse { 0% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.05); opacity: 0.8; } 100% { transform: scale(1); opacity: 1; } }
-    @keyframes fadeInOut { 0% { opacity: 0; } 25% { opacity: 1; } 75% { opacity: 1; } 100% { opacity: 0; } }
-    p {
-      font-size: clamp(1rem, 1.5vw + 0.5rem, 1.5rem);
-      max-width: 800px;
-      line-height: 1.6;
-      color: #f9e9b8;
-      user-select: text;
-    }
+
+    /* ── NAV ── */
     nav {
       position: fixed;
-      top: 2rem;
-      left: 50%;
-      transform: translateX(-50%);
+      top: 0; left: 0; right: 0;
+      z-index: 100;
       display: flex;
-      justify-content: center;
-      flex-wrap: nowrap;
-      gap: 1rem;
-      padding: 1rem 2.5rem;
-      background: rgba(250, 250, 255, 0.12);
-      border: 1.5px solid rgba(255, 255, 255, 0.3);
-      border-radius: 999px;
-      box-shadow: 0 12px 40px rgba(255, 255, 255, 0.2);
-      backdrop-filter: saturate(180%) blur(20px);
-      -webkit-backdrop-filter: saturate(180%) blur(20px);
-      color: #f9e9b8;
-      z-index: 20;
-      user-select: none;
-      min-width: 280px;  /* keeps oval shape on mobile */
-      max-width: 95vw;   /* prevents overflow on very small screens */
-      overflow-x: auto;  /* allows scrolling on narrow viewports */
-      white-space: nowrap; /* prevents nav links from wrapping */
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.2rem 2.5rem;
+      background: rgba(247,244,239,0.92);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid rgba(10,10,10,0.08);
     }
-    nav a {
-      color: #f9e9b8;
+    .nav-logo {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.1rem;
+      letter-spacing: 0.12em;
+      color: var(--black);
       text-decoration: none;
-      font-weight: 500;
-      font-size: clamp(0.95rem, 1.2vw, 1.15rem);
-      transition: color 0.3s ease;
     }
-    nav a:hover {
-      color: #fffff0;
-      animation: navWave 0.6s cubic-bezier(0.25, 1.25, 0.5, 1) forwards;
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--black);
+      text-decoration: none;
+      opacity: 0.55;
+      transition: opacity 0.2s;
     }
-    @keyframes navWave {
-      0% { transform: scale(1); }
-      50% { transform: scale(1.3, 0.7); }
-      100% { transform: scale(1); }
+    .nav-links a:hover { opacity: 1; }
+
+    /* ── HERO ── */
+    #home {
+      min-height: 100vh;
+      background: var(--black);
+      display: grid;
+      grid-template-rows: 1fr auto;
+      padding-top: 80px;
+      position: relative;
+      overflow: hidden;
     }
-    a {
-      color: #f9e9b8;
-      text-decoration: underline;
-      transition: color 0.3s ease;
+    #home::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url('Pasted Graphic.png');
+      background-size: cover;
+      background-position: center top;
+      opacity: 0.45;
+      z-index: 0;
     }
-    a:hover { color: #fff3c0; }
-    .band-members {
+    #home::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to bottom, rgba(10,10,10,0.25) 0%, rgba(10,10,10,0.15) 40%, rgba(10,10,10,0.7) 100%);
+      z-index: 1;
+    }
+    .hero-grid, .hero-ticker { position: relative; z-index: 2; }
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      align-items: end;
+      padding: 4vw 4vw 0;
+      gap: 2rem;
+    }
+    .hero-eyebrow {
+      font-size: 0.68rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 1.5rem;
       display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-eyebrow::before { content: ''; width: 24px; height: 1px; background: var(--gold); }
+    .hero-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(5rem, 16vw, 16rem);
+      line-height: 0.88;
+      letter-spacing: -0.01em;
+      color: var(--white);
+    }
+    .hero-title em {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      color: var(--red);
+      display: block;
+    }
+    .hero-right {
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding-bottom: 1rem;
+      gap: 2.5rem;
+    }
+    .hero-sub {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.1rem, 2vw, 1.5rem);
+      font-style: italic;
+      color: rgba(247,244,239,0.5);
+      line-height: 1.55;
+      max-width: 340px;
+    }
+    .hero-links { display: flex; flex-direction: column; gap: 0.6rem; }
+    .hero-link {
+      font-size: 0.68rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: var(--white);
+      text-decoration: none;
+      opacity: 0.35;
+      transition: opacity 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .hero-link::before { content: '→'; opacity: 0.6; }
+    .hero-link:hover { opacity: 1; }
+    .hero-ticker {
+      border-top: 1px solid rgba(247,244,239,0.08);
+      padding: 1rem 4vw;
+      overflow: hidden;
+      white-space: nowrap;
+    }
+    .hero-ticker-inner {
+      display: inline-block;
+      animation: tick 18s linear infinite;
+      font-family: 'Anton', sans-serif;
+      font-size: 0.75rem;
+      letter-spacing: 0.3em;
+      color: rgba(247,244,239,0.2);
+    }
+    @keyframes tick { from { transform: translateX(0); } to { transform: translateX(-50%); } }
+
+    /* ── MUSIC ── */
+    #music {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      min-height: 80vh;
+    }
+    .music-left {
+      background: var(--red);
+      padding: clamp(3rem, 8vw, 7rem) clamp(2rem, 5vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .section-num {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.5);
+    }
+    .section-title-xl {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 9vw, 9rem);
+      line-height: 0.9;
+      color: var(--white);
+      margin-top: 2rem;
+    }
+    .music-right {
+      background: var(--white);
+      padding: clamp(3rem, 8vw, 7rem) clamp(2rem, 5vw, 5rem);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+    .music-body {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1.25rem, 2.2vw, 1.75rem);
+      line-height: 1.55;
+      color: var(--mid);
+      max-width: 420px;
+    }
+    .pill-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.75rem;
+      background: var(--black);
+      color: var(--white);
+      text-decoration: none;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      transition: background 0.25s;
+      align-self: flex-start;
+      margin-top: 3rem;
+    }
+    .pill-link:hover { background: var(--red); }
+    .status-bar {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      margin-top: auto;
+      padding-top: 2rem;
+      border-top: 1px solid rgba(10,10,10,0.1);
+    }
+    .status-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: var(--red);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+    .status-text {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.5;
+    }
+
+    /* ── MEDIA ── */
+    #media {
+      background: var(--black);
+      padding: clamp(4rem, 10vw, 10rem) clamp(2rem, 6vw, 6rem);
+    }
+    .media-tag {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.35);
+      margin-bottom: 1.5rem;
+    }
+    .media-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.9;
+      color: var(--white);
+      margin-bottom: 4rem;
+    }
+    .media-cards {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 2px;
+    }
+    .media-card {
+      padding: clamp(2.5rem, 5vw, 5rem) clamp(2rem, 4vw, 4rem);
+      border: 1px solid rgba(247,244,239,0.06);
+      text-decoration: none;
+      color: var(--white);
+      display: flex;
+      flex-direction: column;
+      gap: 1.5rem;
+      transition: background 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+    .media-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 0; height: 2px;
+      background: var(--gold);
+      transition: width 0.4s ease;
+    }
+    .media-card:hover::after { width: 100%; }
+    .media-card:hover { background: rgba(247,244,239,0.03); }
+    .media-card-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+    }
+    .media-card-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 4vw, 3.5rem);
+      line-height: 1;
+    }
+    .media-card-handle {
+      font-size: 0.75rem;
+      letter-spacing: 0.15em;
+      opacity: 0.3;
+      margin-top: auto;
+    }
+    .media-coming {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1rem, 1.8vw, 1.3rem);
+      color: rgba(247,244,239,0.35);
+      margin-top: 3rem;
+      border-top: 1px solid rgba(247,244,239,0.07);
+      padding-top: 2rem;
+    }
+
+    /* ── SHOWS ── */
+    #performances {
+      background: var(--white);
+      padding: clamp(4rem, 10vw, 10rem) clamp(2rem, 6vw, 6rem);
+    }
+    .shows-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      margin-bottom: 4rem;
       flex-wrap: wrap;
-      justify-content: center;
-      gap: clamp(1.5rem, 4vw, 3rem);
-      margin-top: 4rem;
+      gap: 1rem;
     }
-    .member {
-      max-width: clamp(250px, 40vw, 300px);
-      text-align: center;
+    .shows-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.88;
     }
-    .member img {
-      width: 100%;
-      height: auto;
-      border-radius: 10px;
-      border: 2px solid rgba(249, 233, 184, 0.3);
+    .shows-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      padding-bottom: 0.5rem;
+    }
+    .show-list { border-top: 1px solid rgba(10,10,10,0.1); }
+    .show-item {
+      display: grid;
+      grid-template-columns: 100px 1fr auto;
+      align-items: center;
+      gap: 2rem;
+      padding: 2rem 0;
+      border-bottom: 1px solid rgba(10,10,10,0.1);
+      transition: padding-left 0.2s;
+    }
+    .show-item:hover { padding-left: 0.75rem; }
+    .show-num {
+      font-family: 'Anton', sans-serif;
+      font-size: 3.5rem;
+      line-height: 1;
+      color: rgba(10,10,10,0.08);
+    }
+    .show-details h3 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(1.3rem, 2.5vw, 1.8rem);
+      font-weight: 400;
+      margin-bottom: 0.35rem;
+    }
+    .show-details p {
+      font-size: 0.7rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.4;
+    }
+    .show-time { text-align: right; }
+    .show-time .date {
+      font-family: 'Anton', sans-serif;
+      font-size: 1.8rem;
+      line-height: 1;
+      color: var(--red);
+    }
+    .show-time .time {
+      font-size: 0.65rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      opacity: 0.4;
+      margin-top: 0.3rem;
+    }
+
+    /* ── BAND ── */
+    #meet { background: var(--black); }
+    .band-header {
+      padding: clamp(4rem, 10vw, 10rem) clamp(2rem, 6vw, 6rem) 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    .band-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(3.5rem, 10vw, 9rem);
+      line-height: 0.88;
+      color: var(--white);
+    }
+    .band-label {
+      font-size: 0.65rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.3);
+      padding-bottom: 0.5rem;
+    }
+    .band-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+    }
+    .member-card {
+      position: relative;
+      aspect-ratio: 2/3;
+      overflow: hidden;
+      background: #111;
+    }
+    .member-card img {
+      width: 100%; height: 100%;
       object-fit: cover;
-      animation: float 4s ease-in-out infinite;
-      loading: lazy;
+      display: block;
+      filter: grayscale(100%) brightness(0.75);
+      transition: filter 0.5s, transform 0.6s;
     }
-    .member p {
-      font-size: clamp(1rem, 1.4vw + 0.3rem, 1.4rem);
-      margin-top: 1rem;
-      color: #f9e9b8;
+    .member-card:hover img {
+      filter: grayscale(20%) brightness(0.85);
+      transform: scale(1.05);
     }
-    @keyframes float {
-      0% { transform: translateY(0); }
-      25% { transform: translateY(-10px); }
-      50% { transform: translateY(0); }
-      75% { transform: translateY(10px); }
-      100% { transform: translateY(0); }
+    .member-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(to top, rgba(10,10,10,0.96) 0%, rgba(10,10,10,0.1) 55%, transparent 100%);
     }
-    @media (max-width: 400px) {
-      nav a { font-size: 0.8rem; }
+    .member-info {
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      padding: 2rem 2rem 2.5rem;
+    }
+    .member-role-tag {
+      font-size: 0.6rem;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 0.5rem;
+    }
+    .member-name {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(2rem, 4vw, 3rem);
+      color: var(--white);
+      line-height: 1;
+    }
+    .member-bio {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: 0.95rem;
+      color: rgba(247,244,239,0.6);
+      line-height: 1.5;
+      margin-top: 0.75rem;
+      max-width: 240px;
+      transform: translateY(8px);
+      opacity: 0;
+      transition: opacity 0.35s, transform 0.35s;
+    }
+    .member-card:hover .member-bio { opacity: 1; transform: translateY(0); }
+
+    /* ── MARQUEE STRIP ── */
+    .marquee-strip {
+      background: var(--red);
+      overflow: hidden;
+      padding: 1rem 0;
+      white-space: nowrap;
+    }
+    .marquee-inner {
+      display: inline-block;
+      animation: tick 16s linear infinite;
+      font-family: 'Anton', sans-serif;
+      font-size: 0.85rem;
+      letter-spacing: 0.4em;
+      color: rgba(247,244,239,0.85);
+    }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--white);
+      min-height: 60vh;
+      display: flex;
+      align-items: center;
+      padding: clamp(4rem, 10vw, 10rem) clamp(2rem, 6vw, 6rem);
+    }
+    .contact-kicker {
+      font-size: 0.65rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      opacity: 0.35;
+      margin-bottom: 2rem;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    .contact-kicker::before { content: ''; width: 24px; height: 1px; background: currentColor; }
+    .contact-title {
+      font-family: 'Anton', sans-serif;
+      font-size: clamp(4rem, 13vw, 12rem);
+      line-height: 0.88;
+      margin-bottom: 3rem;
+    }
+    .contact-title span { color: var(--red); }
+    .contact-body {
+      font-family: 'DM Serif Display', serif;
+      font-style: italic;
+      font-size: clamp(1.1rem, 2vw, 1.4rem);
+      line-height: 1.6;
+      opacity: 0.6;
+      max-width: 500px;
+      margin-bottom: 3rem;
+    }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--black);
+      padding: 2rem clamp(2rem, 6vw, 6rem);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+    }
+    footer p {
+      font-size: 0.62rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: rgba(247,244,239,0.25);
+    }
+
+    /* ── REVEAL ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.8s ease, transform 0.8s ease;
+    }
+    .reveal.up { opacity: 1; transform: translateY(0); }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .hero-grid { grid-template-columns: 1fr; }
+      .hero-right { padding-bottom: 3rem; }
+      #music { grid-template-columns: 1fr; }
+      .media-cards { grid-template-columns: 1fr; }
+      .band-grid { grid-template-columns: 1fr; }
+      .nav-links { display: none; }
+      .show-item { grid-template-columns: 60px 1fr; }
+      .show-time { display: none; }
     }
   </style>
 </head>
 <body>
-  <div id="particles-js"></div>
+
   <nav>
-    <a href="#home">Home</a>
-    <a href="#music">Music</a>
-    <a href="#media">Media</a>
-    <a href="#performances">Performances</a>
-    <a href="#meet">Meet the Band</a>
-    <a href="#contact">Contact</a>
+    <a href="#home" class="nav-logo">The Echoes</a>
+    <ul class="nav-links">
+      <li><a href="#music">Music</a></li>
+      <li><a href="#media">Media</a></li>
+      <li><a href="#performances">Shows</a></li>
+      <li><a href="#meet">Band</a></li>
+      <li><a href="#contact">Contact</a></li>
+    </ul>
   </nav>
 
+  <!-- HERO -->
   <section id="home">
-    <h1 class="italic-typewriter">The Echoes </h1>
-    <p>We are a young three-piece indie rock band with raw energy.</p>
+    <div class="hero-grid">
+      <div class="hero-left">
+        <p class="hero-eyebrow">Indie Rock · Flower Mound, TX · Est. 2025</p>
+        <h1 class="hero-title">The<br><em>Echoes</em></h1>
+      </div>
+      <div class="hero-right">
+        <p class="hero-sub">A three-piece with raw energy and something to say.</p>
+        <div class="hero-links">
+          <a href="https://open.spotify.com/playlist/0bcZMjEoZ7zeB5mP7HZK1Z" target="_blank" class="hero-link">Listen on Spotify</a>
+          <a href="https://instagram.com/theechos" target="_blank" class="hero-link">Follow on Instagram</a>
+          <a href="https://youtube.com/@The_Echoes_Official" target="_blank" class="hero-link">Watch on YouTube</a>
+        </div>
+      </div>
+    </div>
+    <div class="hero-ticker">
+      <span class="hero-ticker-inner">
+        THE ECHOES &nbsp;·&nbsp; RAW ENERGY &nbsp;·&nbsp; INDIE ROCK &nbsp;·&nbsp; ORIGINAL MUSIC &nbsp;·&nbsp; FLOWER MOUND TX &nbsp;·&nbsp; LIVE SHOWS &nbsp;·&nbsp; RECORD IN PROGRESS &nbsp;·&nbsp;
+        THE ECHOES &nbsp;·&nbsp; RAW ENERGY &nbsp;·&nbsp; INDIE ROCK &nbsp;·&nbsp; ORIGINAL MUSIC &nbsp;·&nbsp; FLOWER MOUND TX &nbsp;·&nbsp; LIVE SHOWS &nbsp;·&nbsp; RECORD IN PROGRESS &nbsp;·&nbsp;
+      </span>
+    </div>
   </section>
 
+  <!-- MUSIC -->
   <section id="music">
-    <h2>Music</h2>
-    <p>We write originals, and a record is in the making! Until then view our setlist on Spotify!</p>
-    <a href="https://open.spotify.com/playlist/0bcZMjEoZ7zeB5mP7HZK1Z?si=hBIsMMzGRrWyv0385yrR9Q&pi=dC-MF7gQRMGPP&nd=1&dlsi=d0e05a7c93b64f6e">Spotify "SetList"</a>
-  </section>
-
-  <section id="media">
-    <h2>Media</h2>
-    <p>Check us out on Instagram and YouTube.</p>
-    <p>Content dropping soon!!!</p>
-    <a href="https://instagram.com/theechos" target="_blank">Follow us on Instagram</a>
-    <a href="https://youtube.com/@The_Echoes_Official" target="_blank">Subscribe to our YouTube</a>
-  </section>
-
-  <section id="performances">
-    <h2>Upcoming Performances</h2>
-    <p>Catch us live at 7:00 PM on August 8th, 2025, at Fountain at Village, Tower Blvd, Southlake, TX! and live at 7:00 PM on August 9th, 2025, at Plaza in The Shops at Lakeside, 2412 Lakeside Pkwy, Flower Mound, TX!</p>
-  </section>
-
-  <section id="meet">
-    <h2>Meet the Band</h2>
-    <div class="band-members">
-      <div class="member">
-        <img src="Advait.jpg" alt="Advait – Bass & Vocals" />
-        <p>Advait – Bass & Vocals. He can play anything you throw at him and sets a voice for every song.</p>
-      </div>
-      <div class="member">
-        <img src="Kevin.jpg" alt="Kevin – Drums" />
-        <p>Kevin – Drums. Driving the energy with thunderous beats and jazzy groove. Aside from drumming he is a talented singer.</p>
-      </div>
-      <div class="member">
-        <img src="Armando.jpg" alt="Armando – Lead Guitar" />
-        <p>Armando – Lead Guitar. After thousands of hours of playing Armando can pick things up in seconds and improvise over tracks with grace.</p>
+    <div class="music-left reveal">
+      <span class="section-num">01 / Music</span>
+      <h2 class="section-title-xl">Sound<br>&amp;<br>Vision</h2>
+    </div>
+    <div class="music-right reveal">
+      <p class="music-body">We write originals — and a record is currently in the making. Until then, catch our full setlist on Spotify.</p>
+      <div>
+        <a href="https://open.spotify.com/playlist/0bcZMjEoZ7zeB5mP7HZK1Z" target="_blank" class="pill-link">▶ &nbsp; Listen on Spotify</a>
+        <div class="status-bar" style="margin-top:3rem;">
+          <span class="status-dot"></span>
+          <span class="status-text">Record in progress</span>
+        </div>
       </div>
     </div>
   </section>
 
-  <section id="contact">
-    <h2>Contact</h2>
-    <p>Get in touch for bookings or questions. Contact us on Instagram</p>
+  <!-- MARQUEE -->
+  <div class="marquee-strip" aria-hidden="true">
+    <span class="marquee-inner">
+      ORIGINAL MUSIC &nbsp;·&nbsp; ELECTRIC GUITAR &nbsp;·&nbsp; BASS &amp; VOCALS &nbsp;·&nbsp; DRUMS &nbsp;·&nbsp; LIVE PERFORMANCE &nbsp;·&nbsp; DFW AREA &nbsp;·&nbsp;
+      ORIGINAL MUSIC &nbsp;·&nbsp; ELECTRIC GUITAR &nbsp;·&nbsp; BASS &amp; VOCALS &nbsp;·&nbsp; DRUMS &nbsp;·&nbsp; LIVE PERFORMANCE &nbsp;·&nbsp; DFW AREA &nbsp;·&nbsp;
+    </span>
+  </div>
+
+  <!-- MEDIA -->
+  <section id="media">
+    <div class="reveal">
+      <p class="media-tag">02 / Media</p>
+      <h2 class="media-title">Follow<br>Along</h2>
+    </div>
+    <div class="media-cards reveal">
+      <a href="https://instagram.com/theechos" target="_blank" class="media-card">
+        <span class="media-card-label">Instagram</span>
+        <h3 class="media-card-title">Photos &amp;<br>Updates</h3>
+        <span class="media-card-handle">@theechos</span>
+      </a>
+      <a href="https://youtube.com/@The_Echoes_Official" target="_blank" class="media-card">
+        <span class="media-card-label">YouTube</span>
+        <h3 class="media-card-title">Video &amp;<br>Clips</h3>
+        <span class="media-card-handle">@The_Echoes_Official</span>
+      </a>
+    </div>
+    <p class="media-coming reveal">Content dropping soon — stay tuned.</p>
   </section>
 
-  <script>
-    particlesJS("particles-js", {
-      particles: {
-        number: { value: 35, density: { enable: true, value_area: 800 } },
-        color: { value: "#f9e9b8" },
-        shape: { type: "circle" },
-        opacity: { value: 0.4, random: true, anim: { enable: true, speed: 0.8, opacity_min: 0.1, sync: false }},
-        size: { value: 4, random: true, anim: { enable: true, speed: 0.5, size_min: 1, sync: false }},
-        move: { enable: true, speed: 1, random: true, out_mode: "out" }
-      },
-      interactivity: { events: { onhover: { enable: false } } },
-      retina_detect: true
-    });
+  <!-- PERFORMANCES -->
+  <section id="performances">
+    <div class="shows-header reveal">
+      <h2 class="shows-title">Live<br>&amp; Loud</h2>
+      <span class="shows-label">03 / Shows</span>
+    </div>
+    <div class="show-list reveal">
+      <div class="show-item">
+        <div class="show-num">01</div>
+        <div class="show-details">
+          <h3>Fountain at Village</h3>
+          <p>Tower Blvd · Southlake, TX</p>
+        </div>
+        <div class="show-time">
+          <div class="date">Aug 8</div>
+          <div class="time">7:00 PM · 2025</div>
+        </div>
+      </div>
+      <div class="show-item">
+        <div class="show-num">02</div>
+        <div class="show-details">
+          <h3>Plaza at The Shops at Lakeside</h3>
+          <p>2412 Lakeside Pkwy · Flower Mound, TX</p>
+        </div>
+        <div class="show-time">
+          <div class="date">Aug 9</div>
+          <div class="time">7:00 PM · 2025</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-    document.addEventListener('DOMContentLoaded', () => {
-      const sections = document.querySelectorAll('section');
-      const reveal = () => sections.forEach(section => {
-        const rect = section.getBoundingClientRect();
-        if (rect.top < window.innerHeight - 100) section.classList.add('visible');
+  <!-- BAND -->
+  <section id="meet">
+    <div class="band-header reveal">
+      <h2 class="band-title">Meet the<br>Players</h2>
+      <span class="band-label">04 / The Band</span>
+    </div>
+    <div class="band-grid">
+      <div class="member-card">
+        <img src="Advait.jpg" alt="Advait" loading="lazy"/>
+        <div class="member-overlay"></div>
+        <div class="member-info">
+          <div class="member-role-tag">Bass &amp; Vocals</div>
+          <div class="member-name">Advait</div>
+          <p class="member-bio">Can play anything you throw at him and sets a voice for every song.</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <img src="Kevin.jpg" alt="Kevin" loading="lazy"/>
+        <div class="member-overlay"></div>
+        <div class="member-info">
+          <div class="member-role-tag">Drums &amp; Vocals</div>
+          <div class="member-name">Kevin</div>
+          <p class="member-bio">Thunderous beats, jazzy groove — and a voice that cuts right through.</p>
+        </div>
+      </div>
+      <div class="member-card">
+        <img src="Armando.jpg" alt="Armando" loading="lazy"/>
+        <div class="member-overlay"></div>
+        <div class="member-info">
+          <div class="member-role-tag">Lead Guitar</div>
+          <div class="member-name">Armando</div>
+          <p class="member-bio">Thousands of hours deep — picks things up in seconds and improvises with grace.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MARQUEE -->
+  <div class="marquee-strip" aria-hidden="true">
+    <span class="marquee-inner">
+      BOOK US &nbsp;·&nbsp; SOUTHLAKE &nbsp;·&nbsp; FLOWER MOUND &nbsp;·&nbsp; DFW &nbsp;·&nbsp; THREE PIECE &nbsp;·&nbsp; INDIE ROCK &nbsp;·&nbsp; GET IN TOUCH &nbsp;·&nbsp;
+      BOOK US &nbsp;·&nbsp; SOUTHLAKE &nbsp;·&nbsp; FLOWER MOUND &nbsp;·&nbsp; DFW &nbsp;·&nbsp; THREE PIECE &nbsp;·&nbsp; INDIE ROCK &nbsp;·&nbsp; GET IN TOUCH &nbsp;·&nbsp;
+    </span>
+  </div>
+
+  <!-- CONTACT -->
+  <section id="contact">
+    <div class="reveal">
+      <div class="contact-kicker">05 / Contact</div>
+      <h2 class="contact-title">Let's<br><span>Talk</span></h2>
+      <p class="contact-body">Bookings, questions, or just here for the music — reach us on Instagram and we'll get back to you.</p>
+      <a href="https://instagram.com/theechos" target="_blank" class="pill-link">→ &nbsp; DM on Instagram</a>
+    </div>
+  </section>
+
+  <footer>
+    <p>© 2025 The Echoes</p>
+    <p>Flower Mound, TX · Indie Rock</p>
+  </footer>
+
+  <script>
+    const els = document.querySelectorAll('.reveal');
+    const obs = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { e.target.classList.add('up'); obs.unobserve(e.target); }
       });
-      window.addEventListener('scroll', reveal);
-      reveal();
-      const title = document.querySelector('h1.italic-typewriter');
-      title.addEventListener('animationend', () => title.classList.add('done'));
-    });
+    }, { threshold: 0.12 });
+    els.forEach(el => obs.observe(el));
   </script>
 </body>
 </html>
